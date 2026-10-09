@@ -1,8 +1,8 @@
 # AI4DOS Wire Protocol 0.3
 
-TCP, UTF-8, Zeilen mit CRLF (Gateway akzeptiert auch LF). Version 0.3 ergänzt ein optionales sichtbares Providerlabel im BEGIN-Frame.
-Der neue Client akzeptiert auch das 0.2-Banner und BEGIN ohne Label. Alte
-0.2-Clients benötigen für einen 0.3-Gateway ein Clientupdate.
+TCP, UTF-8, lines terminated by CRLF (the gateway also accepts LF). Version 0.3 adds an optional visible provider label to the BEGIN frame.
+The new client also accepts the 0.2 banner and BEGIN without a label. Older
+0.2 clients require a client update to use a 0.3 gateway.
 
 ```text
 S: OK AI4DOS/0.3 UTF-8
@@ -20,32 +20,32 @@ C: QUIT
 S: OK BYE
 ```
 
-HMAC-SHA256 verwendet das lokale Device-Secret als Schlüssel und die 64
-ASCII-Zeichen der Challenge als Nachricht (keine Hex-Dekodierung). Challenge
-und Authentifizierung sind verbindungsgebunden; eine Challenge ist einmalig.
-Fehler: `ERROR <code> <message>`. Auth-Fehler und Verbindungslimit schließen die
-Verbindung; Antwortfehler liefern kein END. QUIT ist auch ohne Session zulässig.
+HMAC-SHA256 uses the local Device-Secret as the key and the 64
+ASCII characters of the challenge as the message (no hex decoding). The challenge
+and authentication are bound to the connection; a challenge can only be used once.
+Errors: `ERROR <code> <message>`. Authentication errors and the connection limit close the
+connection; response errors do not produce END. QUIT is also allowed without a session.
 
-Device-ID: 1–64 Zeichen aus ASCII-Buchstaben, Ziffern, Punkt, Minus, Unterstrich.
-Secret: 8–128 druckbare ASCII-Zeichen ohne Leerzeichen. Maximal 1024 Bytes
-pro Befehlszeile ohne CRLF, MSG-Nutztext maximal 1000 UTF-8-Bytes.
-DATA-Nutzlast maximal 512 Bytes nach Escaping; UTF-8-Zeichen und Escape-Sequenzen
-werden nicht geteilt. Escapes: `\\`, `\r`, `\n`, `\t`.
+Device-ID: 1–64 characters consisting of ASCII letters, digits, period, hyphen, and underscore.
+Secret: 8–128 printable ASCII characters without spaces. A maximum of 1024 bytes
+per command line excluding CRLF; MSG text is limited to 1000 UTF-8 bytes.
+The DATA payload is limited to 512 bytes after escaping; UTF-8 characters and escape sequences
+are not split. Escapes: `\\`, `\r`, `\n`, `\t`.
 
-NEW ersetzt die Session dieser Verbindung. RESUME <session-id> verbindet eine
-noch vorhandene Session desselben authentifizierten Geräts erneut; Erfolg: OK RESUME.
-Eine anderweitig verbundene Session ergibt SESSION_BUSY, eine fehlende SESSION.
-Sessions bleiben prozesslokal und überleben keinen Gatewayrestart. Kein Output-Modus-Befehl. Device-ID beeinflusst nur Auth und Limits.
-Interne Rollen: ROLE_USER, ROLE_AI, ROLE_SYSTEM. Sichtbare Labels sind separat.
+NEW replaces the session of this connection. RESUME <session-id> reconnects an
+existing session belonging to the same authenticated device; success: OK RESUME.
+A session connected elsewhere yields SESSION_BUSY; a missing session yields SESSION.
+Sessions remain local to the process and do not survive a gateway restart. No output mode command. Device-ID only affects authentication and limits.
+Internal roles: ROLE_USER, ROLE_AI, ROLE_SYSTEM. Visible labels are separate.
 
-Im DOS-Modus konsumiert das Gateway zunächst den kompletten Providerstream,
-formatiert dann die Antwort und sendet DATA/END. BEGIN erscheint davor. Der
-Client gibt jedes DATA sofort aus. Der optionale Gateway-Modus utf8 sendet
-Provider-Deltas direkt; der Client konvertiert UTF-8 für die gewählte DOS-Codepage.
+In DOS mode, the gateway first consumes the entire provider stream,
+then formats the response and sends DATA/END. BEGIN is sent beforehand. The
+client outputs each DATA immediately. The optional gateway mode utf8 sends
+provider deltas directly; the client converts UTF-8 to the selected DOS code page.
 
-Providerlabels sind ChatGPT, Claude, Gemini, Mistral, NVIDIA und OpenRouter.
-Mock, openai-compatible und unbekannte Provider senden BEGIN ohne Label; der
-Client zeigt dann sprachabhängig AI oder KI. Unbekannte druckbare Labels
-werden ebenfalls als Fallback dargestellt. Jede Antwort liefert ihr Label neu,
-auch nach RESUME/Reconnect. Das Label beeinflusst weder Rollen noch Sessions.
-Transcript/Save behalten das beim Nachrichtenbeginn sichtbare Label.
+Provider labels are ChatGPT, Claude, Gemini, Mistral, NVIDIA, and OpenRouter.
+Mock, openai-compatible, and unknown providers send BEGIN without a label; the
+client then displays AI or KI depending on the language. Unknown printable labels
+are also displayed using the fallback. Each response supplies its label anew,
+including after RESUME/reconnect. The label affects neither roles nor sessions.
+Transcript/Save retain the label visible at the start of the message.
