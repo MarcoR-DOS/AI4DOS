@@ -1,0 +1,62 @@
+[
+  {
+    "input": "# Grüße “Quotes” — ... 😀 🙂 😉 😢 🚀",
+    "width": null,
+    "expected": "Grüße \"Quotes\" - ... :-D :-) ;-) :-("
+  },
+  {
+    "input": "# Grüße “Quotes” — ... 😀 🙂 😉 😢 🚀",
+    "width": 76,
+    "expected": "Grüße \"Quotes\" - ... :-D :-) ;-) :-("
+  },
+  {
+    "input": "* One\n+ Two\n> Quote\n1. numbered",
+    "width": null,
+    "expected": "- One\n- Two\nQuote\n1. numbered"
+  },
+  {
+    "input": "* One\n+ Two\n> Quote\n1. numbered",
+    "width": 76,
+    "expected": "- One\n- Two\nQuote\n1. numbered"
+  },
+  {
+    "input": "```c\nx = a * b;\n```",
+    "width": null,
+    "expected": "  x = a * b;"
+  },
+  {
+    "input": "```c\nx = a * b;\n```",
+    "width": 76,
+    "expected": "  x = a * b;"
+  },
+  {
+    "input": "| A | B |\n| --- | ---: |\n| one | two |",
+    "width": null,
+    "expected": "A: one\nB: two"
+  },
+  {
+    "input": "| A | B |\n| --- | ---: |\n| one | two |",
+    "width": 76,
+    "expected": "A: one\nB: two"
+  },
+  {
+    "input": "https://example.com/help?q=1",
+    "width": null,
+    "expected": "https://example.com/help?q=1"
+  },
+  {
+    "input": "https://example.com/help?q=1",
+    "width": 76,
+    "expected": "https://example.com/help?q=1"
+  },
+  {
+    "input": "Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word ",
+    "width": null,
+    "expected": "Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word"
+  },
+  {
+    "input": "Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word ",
+    "width": 76,
+    "expected": "Word Word Word Word Word Word Word Word Word Word Word Word Word Word Word\nWord Word Word Word Word Word Word Word Word Word Word Word Word Word Word\nWord Word Word Word Word Word Word Word Word Word Word Word Word Word Word\nWord Word Word Word Word Word Word Word Word Word Word Word Word Word Word\nWord Word Word Word Word Word Word Word Word Word Word Word Word Word Word\nWord Word Word Word Word"
+  }
+]

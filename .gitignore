@@ -1,0 +1,66 @@
+# Local private development notes; never publish this directory.
+/.dev/
+/dev-notes/
+
+# Credentials and local configuration (use reviewed, secret-free examples later).
+.env
+.env.*
+*.local
+*.local.*
+secrets/
+credentials/
+/client/AI4DOS.CFG
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Generated builds and compiler artifacts.
+/client/build/*
+!/client/build/.gitkeep
+/server/build/
+/build/
+/dist/
+*.obj
+*.o
+*.exe
+*.com
+*.dll
+*.lib
+*.a
+*.map
+*.err
+*.pdb
+
+# Local sessions, transcripts, logs and runtime data.
+/logs/
+/data/
+/sessions/
+/transcripts/
+# DOS saves may be created in any working directory.
+[Cc][Hh][Aa][Tt][Ss]/
+*.log
+
+# Dependency caches and local tooling.
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.cache/
+
+# Editor, OS and temporary files.
+.DS_Store
+._*
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
+
+# Pinned, validated DOS input for reproducible clean-checkout packaging.
+!/release/inputs/AI4DOS.EXE

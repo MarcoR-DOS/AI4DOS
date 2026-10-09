@@ -1,0 +1,32 @@
+services:
+  gateway:
+    image: ai4dos-gateway:beta
+    pull_policy: never
+    user: "10001:10001"
+    ports:
+      - "${AI4DOS_BIND_ADDRESS:-0.0.0.0}:${AI4DOS_PORT:-1983}:1983"
+    volumes:
+      - type: bind
+        source: "${AI4DOS_GATEWAY_CONFIG:?Set the absolute host path to gateway.json}"
+        target: /config/gateway.json
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: "${AI4DOS_PROVIDER_CONFIG:?Set the absolute host path to provider.cfg}"
+        target: /config/provider.cfg
+        read_only: true
+        bind:
+          create_host_path: false
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    stop_grace_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

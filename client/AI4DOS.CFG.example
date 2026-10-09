@@ -1,0 +1,10 @@
+# Gateway computer's numeric LAN IPv4 address.
+SERVER=127.0.0.1
+PORT=1983
+DEVICE=dos-pc
+# Choose your own device key (recommend 12-16+ letters/digits).
+# Set the identical value in gateway JSON devices["dos-pc"].
+# Never use the provider API key; replace the placeholder below.
+SECRET=<KEY>
+LANGUAGE=en
+CODEPAGE=AUTO

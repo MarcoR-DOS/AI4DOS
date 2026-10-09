@@ -1,0 +1,6 @@
+{
+  "host": "127.0.0.1",
+  "port": 1983,
+  "devices": {"dos-pc": "<KEY>"},
+  "provider_config": "provider.local.cfg"
+}

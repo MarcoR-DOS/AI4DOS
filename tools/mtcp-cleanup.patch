@@ -1,0 +1,82 @@
+diff --git a/src/TCPLIB/PACKET.CPP b/src/TCPLIB/PACKET.CPP
+--- a/src/TCPLIB/PACKET.CPP
++++ b/src/TCPLIB/PACKET.CPP
+@@ -149,6 +149,7 @@ int8_t Buffer_init( void ) {
+   if ( tmp == NULL ) {
+     return -1;
+   }
++  BufferMemPtr = tmp;
+ 
+   // Put pointers to packets in the free stack.
+ 
+@@ -262,7 +263,12 @@ void Buffer_stopReceiving( void ) { Buffer_fs_index = 0; }
+ // This is about the last step before shutting everything down.  It just has
+ // to return the memory that was allocated.
+ 
+-void Buffer_stop( void ) { if ( BufferMemPtr) free( BufferMemPtr ); }
++void Buffer_stop( void ) {
++  if ( BufferMemPtr ) {
++    free( BufferMemPtr );
++    BufferMemPtr = NULL;
++  }
++}
+ 
+ 
+ 
+diff --git a/src/TCPLIB/TCP.CPP b/src/TCPLIB/TCP.CPP
+--- a/src/TCPLIB/TCP.CPP
++++ b/src/TCPLIB/TCP.CPP
+@@ -179,7 +179,10 @@ int8_t TcpBuffer::init( uint8_t xmitBufs_p ) {
+ 
+ 
+ void TcpBuffer::stop( void ) {
+-  if ( xmitBuffersMemPtr != NULL ) free( xmitBuffersMemPtr );
++  if ( xmitBuffersMemPtr != NULL ) {
++    free( xmitBuffersMemPtr );
++    xmitBuffersMemPtr = NULL;
++  }
+ }
+ 
+ 
+diff --git a/src/TCPLIB/TCPSOCKM.CPP b/src/TCPLIB/TCPSOCKM.CPP
+--- a/src/TCPLIB/TCPSOCKM.CPP
++++ b/src/TCPLIB/TCPSOCKM.CPP
+@@ -99,7 +99,7 @@ int8_t TcpSocketMgr::init( uint8_t maxSockets ) {
+   }
+ 
+   // Allocate memory for socket data structures
+-  TcpSocket *socketsMemPtr = (TcpSocket *)malloc( maxSockets * sizeof( TcpSocket ) );
++  socketsMemPtr = (TcpSocket *)malloc( maxSockets * sizeof( TcpSocket ) );
+   if ( socketsMemPtr == NULL ) {
+     allocatedSockets = 0;
+     TRACE_TCP_WARN(( "Tcp: Mem alloc err creating socket pool\n" ));
+@@ -130,7 +130,10 @@ int8_t TcpSocketMgr::init( uint8_t maxSockets ) {
+ void TcpSocketMgr::stop( void ) {
+   // The user is responsible for closing and draining sockets properly.
+   // We are just here to deallocate the memory that we used.
+-  if ( socketsMemPtr != NULL ) { free( socketsMemPtr ); }
++  if ( socketsMemPtr != NULL ) {
++    free( socketsMemPtr );
++    socketsMemPtr = NULL;
++  }
+ }
+ 
+ 
+diff --git a/src/TCPLIB/UTILS.CPP b/src/TCPLIB/UTILS.CPP
+--- a/src/TCPLIB/UTILS.CPP
++++ b/src/TCPLIB/UTILS.CPP
+@@ -1053,7 +1053,14 @@ void Utils::endStack2( bool ignoreTracing ) {
+   #endif
+ 
+ 
++  #if defined(__COMPACT__) || defined(__LARGE__) || defined(__HUGE__)
++  /* Open Watcom's default/far heap checker reports _HEAPBADNODE after
++     ordinary stdio fopen() in these models.  The near heap checker remains
++     reliable; the mTCP-owned far allocations are released explicitly above. */
++  if ( _nheapchk( ) != _HEAPOK ) {
++  #else
+   if ( _heapchk( ) != _HEAPOK ) {
++  #endif
+     fprintf( stderr, "End: heap is corrupted!\n" );
+   }
+ 

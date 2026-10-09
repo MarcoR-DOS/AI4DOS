@@ -1,0 +1,16 @@
+# Allowlist: local secrets and all other files are absent from the build context.
+**
+!Dockerfile
+!.dockerignore
+!server/
+!server/requirements.txt
+!server/requirements-lock.txt
+!server/src/
+!server/src/ai4dos/
+!server/src/ai4dos/*.py
+!tools/
+!tools/docker-healthcheck.py
+# Never re-include local Python overrides or credential files.
+**/*.local*
+**/*.key
+**/*.pem

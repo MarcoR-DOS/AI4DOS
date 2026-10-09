@@ -1,0 +1,16 @@
+{
+  "description": "Open Watcom 2.0 beta DOS toolchain, compiler/linker build 2026-09-27; exact tested tree fingerprints",
+  "algorithm": "SHA256 over sorted relative UTF-8 path + NUL + raw SHA256(file) for every regular file in each directory",
+  "trees": {
+    "binw": "d942ec39520c9ad7e0e5889f0c0950d64ade4c7da0881aba51f7326354277573",
+    "h": "50cf8684967df9ea1a8ced8f85e3e5919c5cc68da6ebe556a6d9a5499673470c",
+    "lib286": "b6756483f07ce357de10b27a5e326fdfcc2ac70f0c7b3e6a69cc70267b77d04d"
+  },
+  "files": {
+    "binw/wcc.exe": "a9fb938290fbd5d9c317ecb67ef91567c6d2c1342a108142cf028d92f5a6e1b5",
+    "binw/wpp.exe": "d89cc42c8ac341808809e9d3f5af7d68a7cf2e78de7eef744a30d9c11787b197",
+    "binw/wasm.exe": "fc24e5c4f58924ab58b68684559211e239f474a5819665c441f55934bbfcda13",
+    "binw/wlink.exe": "82ffe8652e2fea1e805f31325d61fae2f519951fb2ebf7f6780dc9e6a096cc6b",
+    "lib286/dos/clibl.lib": "5f463a47664aa08c2af6060b20c6d121f80a5a5ed52a153e7b1adb7a4cf8c1b2"
+  }
+}
