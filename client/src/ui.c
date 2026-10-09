@@ -186,15 +186,18 @@ void ui_help(void)
 void ui_info(void)
 {
     unsigned i;char row[77];overlay=1;video_hide_cursor();for(i=0;i<18;++i)info_row(i,"");
-    sprintf(row,"%s " AI4DOS_VERSION AI4DOS_VERSION_SUFFIX,tr(TXT_VERSION));info_row(0,row);
-    sprintf(row,"%s: " WIRE_VERSION,tr(TXT_WIRE_PROTOCOL));info_row(1,row);
-    sprintf(row,"%s: %.12s",tr(TXT_SESSION),session_text[0]?session_text:"-");info_row(3,row);
-    sprintf(row,"%s: %s",tr(TXT_STATUS),ui_status_label(0));info_row(4,row);
-    sprintf(row,"%s: %s",tr(TXT_SERVER),tr(current_status==UI_ONLINE||current_status==UI_TX_RX?TXT_CONNECTED:TXT_DISCONNECTED));info_row(5,row);
-    info_row(14,"License: GPL-3.0-only");
-    info_row(15,"mTCP: GPL-3.0-or-later");
-    info_row(16,"Watcom runtime: OWPL 1.0 - source available");
-    info_row(17,"Source: github.com/open-watcom/open-watcom-v2");
+    sprintf(row,"%s: %.12s",tr(TXT_SESSION),session_text[0]?session_text:"-");info_row(0,row);
+    sprintf(row,"%s: %s",tr(TXT_STATUS),ui_status_label(0));info_row(1,row);
+    sprintf(row,"%s: %s",tr(TXT_SERVER),tr(current_status==UI_ONLINE||current_status==UI_TX_RX?TXT_CONNECTED:TXT_DISCONNECTED));info_row(2,row);
+    info_row(5,"AI4DOS");
+    sprintf(row,"%s: " AI4DOS_VERSION AI4DOS_VERSION_SUFFIX,tr(TXT_VERSION));info_row(6,row);
+    info_row(7,"Wire Protocol: " WIRE_VERSION);
+    info_row(8,"License: GPL-3.0-only");
+    info_row(9,"Source: github.com/MarcoR-DOS/AI4DOS");
+    info_row(12,"Third-Party Licenses");
+    info_row(13,"mTCP: GPL-3.0-or-later");
+    info_row(14,"Watcom Runtime: OWPL 1.0 - source available");
+    info_row(15,"Source: github.com/open-watcom/open-watcom-v2");
     footer_message(tr(TXT_BACK));
 }
 void ui_save_prompt(const char *name,const char *hint,int editing)

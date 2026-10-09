@@ -15,7 +15,7 @@ python3 - "$stage" <<'PYNOTICE'
 from pathlib import Path
 import sys
 stage = Path(sys.argv[1])
-notice = (b"/* AI4DOS build modifications, 2026-10-06: cleanup/pool lifetime and\n"
+notice = (b"/* AI4DOS build modifications, 2026-10-06/09: cleanup/pool lifetime, UI diagnostics and\n"
           b"   Watcom far-model heap check. See tools/mtcp-cleanup.patch. */\n")
 for name in ("PACKET.CPP", "TCP.CPP", "TCPSOCKM.CPP", "UTILS.CPP"):
     path = stage / "src/TCPLIB" / name

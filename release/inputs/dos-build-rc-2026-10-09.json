@@ -38,7 +38,6 @@
     "client/src/transcr.c": "aa86a25aa124c14d05f68cc01fec67716acffe53588c9d6a32fd7b1c8dab6600",
     "client/src/ui.c": "8b8112a7ce011388e8d1bc6f9e6dba5a2d1d1f4ddcc549b3e1349d47f15755ff",
     "client/src/video.c": "ccaae5d3965a2ba0e33940980d9f4bd195e294d327977a6cbbb29df8620843f9",
-    "release/inputs/AI4DOS.EXE": "0e4f5b2a97f3356bc0b4bdaa0cb79021eac45ddeee3064e5cf4aefbab4c6ebb0",
     "third_party/watcom-toolchain.json": "77bb6ce3f62c8d589bce6468dce800f1c8f45076b60d6d8cefc7c3e4cb79b65a",
     "tools/build-dos.sh": "3bc9215e20a4764552cb1a4011fd9793a1fbb94f8c9323455484f6446a153085",
     "tools/mtcp-cleanup.patch": "af3f0b53f54b1b7ea45ee77289b7934d1fc90b6e9bd047b86dd9fecbd5dfe7dd",
@@ -46,6 +45,7 @@
     "tools/verify-watcom.py": "df7770dc258ed5b444aefe70b03f244d608c96bbd0c9641191746c7b07d75522",
     "client/tests/uitest.c": "330af1c3bf069438dd2e2df44bc2e3947e7d97c74d7dd6ba3a6680ac581d1f29",
     "client/tests/systest.c": "1c0465bbb5525cd400418cd08951502344b76c463c2d5691e2f94e77fef44521",
-    "client/tests/infotest.c": "f7d38c94b6bd7947ed30d8b7ea7275e17b78fc08f667c2ddc1daa8019e2299d3"
+    "client/tests/infotest.c": "f7d38c94b6bd7947ed30d8b7ea7275e17b78fc08f667c2ddc1daa8019e2299d3",
+    "dist/AI4DOS.EXE": "0e4f5b2a97f3356bc0b4bdaa0cb79021eac45ddeee3064e5cf4aefbab4c6ebb0"
   }
 }

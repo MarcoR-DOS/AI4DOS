@@ -25,7 +25,7 @@ int main(void)
     static const char * const notices[]={
         "License: GPL-3.0-only",
         "mTCP: GPL-3.0-or-later",
-        "Watcom runtime: OWPL 1.0 - source available",
+        "Watcom Runtime: OWPL 1.0 - source available",
         "Source: github.com/open-watcom/open-watcom-v2"};
     unsigned lang,page,state,status,busy,i,row,col,n;char text[77];
     for(lang=0;lang<LANG_COUNT;++lang)for(page=0;page<3;++page){
@@ -40,14 +40,19 @@ int main(void)
                 ui_status((UiStatus)status);ui_busy(busy);
                 for(i=0;i<2000;++i)saved[i]=cells[i];
                 ui_info();
-                sprintf(text,"%s " AI4DOS_VERSION AI4DOS_VERSION_SUFFIX,tr(TXT_VERSION));CHECK(row_equals(3,text));
-                sprintf(text,"%s: " WIRE_VERSION,tr(TXT_WIRE_PROTOCOL));CHECK(row_equals(4,text));
-                CHECK(row_equals(5,""));
-                sprintf(text,"%s: 012345abcdef",tr(TXT_SESSION));CHECK(row_equals(6,text));
-                sprintf(text,"%s: %s",tr(TXT_STATUS),ui_status_label(0));CHECK(row_equals(7,text));
-                sprintf(text,"%s: %s",tr(TXT_SERVER),tr(status==UI_ONLINE||status==UI_TX_RX?TXT_CONNECTED:TXT_DISCONNECTED));CHECK(row_equals(8,text));
-                for(row=9;row<17;++row)CHECK(row_equals(row,""));
-                for(i=0;i<4;++i)CHECK(row_equals(17+i,notices[i]));
+                sprintf(text,"%s: 012345abcdef",tr(TXT_SESSION));CHECK(row_equals(3,text));
+                sprintf(text,"%s: %s",tr(TXT_STATUS),ui_status_label(0));CHECK(row_equals(4,text));
+                sprintf(text,"%s: %s",tr(TXT_SERVER),tr(status==UI_ONLINE||status==UI_TX_RX?TXT_CONNECTED:TXT_DISCONNECTED));CHECK(row_equals(5,text));
+                CHECK(row_equals(6,""));CHECK(row_equals(7,""));
+                CHECK(row_equals(8,"AI4DOS"));
+                sprintf(text,"%s: " AI4DOS_VERSION AI4DOS_VERSION_SUFFIX,tr(TXT_VERSION));CHECK(row_equals(9,text));
+                CHECK(row_equals(10,"Wire Protocol: " WIRE_VERSION));
+                CHECK(row_equals(11,notices[0]));
+                CHECK(row_equals(12,"Source: github.com/MarcoR-DOS/AI4DOS"));
+                CHECK(row_equals(13,""));CHECK(row_equals(14,""));
+                CHECK(row_equals(15,"Third-Party Licenses"));
+                for(i=1;i<4;++i)CHECK(row_equals(15+i,notices[i]));
+                CHECK(row_equals(19,""));CHECK(row_equals(20,""));
                 CHECK(row_equals(24,tr(TXT_BACK)));
                 for(row=0;row<24;++row)for(col=0;col<80;++col)
                     if(row<3||row>20||col<2||col>77)CHECK(cells[row*80+col]==saved[row*80+col]);

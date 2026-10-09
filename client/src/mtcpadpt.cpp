@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdarg.h>
 #include <malloc.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,10 +8,43 @@
 #include "utils.h"
 #include "packet.h"
 #include "arp.h"
+#include "ip.h"
 #include "tcp.h"
 #include "tcpsockm.h"
 #include "net.h"
 #include "ramdiag.h"
+extern "C" {
+#include "ui.h"
+}
+
+/* mTCP Utils diagnostics belong in the active DOS UI. Non-stderr output
+   retains ordinary stdio behavior. Bound and sanitize each diagnostic. */
+extern "C" int ai4dos_mtcp_fprintf(FILE *stream, const char *format, ...)
+{
+    char text[256];
+    unsigned i;
+    int rc;
+    va_list args;
+    va_start(args, format);
+    if (stream != stderr) {
+        rc = vfprintf(stream, format, args);
+        va_end(args);
+        return rc;
+    }
+    rc = vsnprintf(text, sizeof(text), format, args);
+    va_end(args);
+    text[sizeof(text)-1] = 0;
+    for (i = 0; text[i]; ++i)
+        if ((unsigned char)text[i] < 32 || (unsigned char)text[i] > 126)
+            text[i] = ' ';
+    while (i && text[i-1] == ' ') text[--i] = 0;
+    if (!i) return rc;
+    ui_scroll_lines(32767);
+    ui_begin(ROLE_SYSTEM, "System");
+    ui_append(text);
+    ui_end();
+    return rc;
+}
 
 static TcpSocket *socket_ptr = 0;
 static int stack_started = 0;
@@ -35,12 +69,30 @@ static int parse_ipv4(const char *text, IpAddr_t address)
     return 1;
 }
 
+/* Read the configuration already parsed by mTCP; mirror its subnet test.
+   No DHCP requirement, routing changes, or packet-driver calls here. */
+static int validate_connection(const char *server, IpAddr_t address)
+{
+    unsigned i;
+    if (!parse_ipv4(server, address)) return NET_START_INVALID_SERVER;
+    if (Ip::isSame(MyIpAddr, IpInvalid)) return NET_START_NO_IP;
+    if (Ip::isSame(Gateway, IpInvalid) &&
+        !Ip::isSame(address, IpBroadcastNonRoutable)) {
+        for (i = 0; i < 4; ++i)
+            if ((MyIpAddr[i] & Netmask[i]) != (address[i] & Netmask[i]))
+                return NET_START_NO_GATEWAY;
+    }
+    return 0;
+}
+
 static int open_connection(const char *server, unsigned port)
 {
     IpAddr_t address;
     uint16_t local_port;
+    int rc;
 
-    if (!parse_ipv4(server, address)) return -2;
+    rc = validate_connection(server, address);
+    if (rc != 0) return rc;
     socket_ptr = TcpSocketMgr::getSocket();
     if (socket_ptr == 0 || socket_ptr->setRecvBuffer(768) != 0) {
         return -5;
@@ -83,13 +135,16 @@ static int close_connection(void)
 extern "C" int mtcp_adapter_start(const char *server, unsigned port)
 {
     int rc;
+    IpAddr_t address;
     if (stack_started) {
         if (!close_connection()) return -1;
         return open_connection(server, port);
     }
     if (Utils::parseEnv() != 0) return -3;
-    if (Utils::initStack(1, 4, break_handler, ctrl_c_handler) != 0)
-        return -4;
+    rc = validate_connection(server, address);
+    if (rc != 0) return rc;
+    rc = Utils::initStack(1, 4, break_handler, ctrl_c_handler);
+    if (rc != 0) return rc == -2 ? -4 : -7;
     stack_started = 1;
     ram_mark(2);
     rc = open_connection(server, port);

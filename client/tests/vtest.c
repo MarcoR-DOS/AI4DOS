@@ -10,6 +10,7 @@
 #include "controls.h"
 #include "l10n.h"
 #include "version.h"
+#include "protocol.h"
 #undef assert
 #define assert(x) do { if(!(x)){FILE *e=fopen("build\\VFAIL.LOG","w");if(e){fprintf(e,"FAIL line %u\n",(unsigned)__LINE__);fclose(e);}return 1;} } while(0)
 static unsigned short __far *cells;
@@ -66,7 +67,7 @@ int main(int argc,char **argv)
         controls_handle(0x3e00,0);assert(screen_text(3,2,tr(TXT_HELP))&&screen_text(5,2,"Enter"));assert(screen_text(24,2,tr(TXT_BACK)));
         r.h.ah=3;r.h.bh=0;int86(0x10,&r,&r);assert(r.x.cx&0x2000);
         controls_handle(27,0);assert(screen_text(3,2,tr(TXT_USER)));
-        ui_set_session("012345abcdef");controls_handle(0x3b00,0);assert(screen_text(3,2,"Version " AI4DOS_VERSION AI4DOS_VERSION_SUFFIX));assert(screen_text(4,2,tr(TXT_WIRE_PROTOCOL)));assert(screen_text(6,2,tr(TXT_SESSION)));assert(screen_text(7,2,"Status: Online"));controls_handle(27,0);
+        ui_set_session("012345abcdef");controls_handle(0x3b00,0);assert(screen_text(9,2,"Version: " AI4DOS_VERSION AI4DOS_VERSION_SUFFIX));assert(screen_text(10,2,"Wire Protocol: " WIRE_VERSION));assert(screen_text(3,2,tr(TXT_SESSION)));assert(screen_text(4,2,"Status: Online"));controls_handle(27,0);
         controls_handle(0x3f00,0);controls_handle('T',0);assert(screen_text(22,2,tr(TXT_SAVE_AS)));
         r.h.ah=3;r.h.bh=0;int86(0x10,&r,&r);assert(!(r.x.cx&0x2000)&&r.x.dx==0x1600+3+strlen(tr(TXT_SAVE_AS)));
         controls_handle(27,0);assert((cells[1762]&255)=='>');

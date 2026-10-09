@@ -5,6 +5,8 @@
 #define TIMEOUT_TICKS (180UL*18UL)
 static char incoming[128];
 static unsigned at,count;
+static int start_error;
+int net_start_error(void){return start_error;}
 static int wait_pump(unsigned long started)
 {
     int state;
@@ -17,7 +19,8 @@ int net_open(const char *server,unsigned port)
 {
     unsigned long started;
     at=count=0;
-    if(mtcp_adapter_start(server,port)!=0)return 0;
+    start_error=mtcp_adapter_start(server,port);
+    if(start_error!=0)return 0;
     started=mtcp_adapter_ticks();
     for(;;){int rc=wait_pump(started);if(rc<0){net_disconnect();return 0;}if(rc>0)return 1;}
 }

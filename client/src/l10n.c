@@ -68,6 +68,15 @@ static const char * const texts[LANG_COUNT][TXT_COUNT]={
         "Authentication failed.",
         "Connection lost.",
         "Connection restored.",
+        "Network unavailable.",
+        "Packet driver not found or initialization failed. Check PACKETINT.",
+        "Check MTCPCFG and IP configuration.",
+        "Network stack initialization failed. See diagnostic above.",
+        "Network not configured.",
+        "No valid IP address assigned.",
+        "Run DHCP or check your IP configuration.",
+        "Invalid server address. Check SERVER in AI4DOS.CFG.",
+        "Network gateway not configured. Check your mTCP IP configuration.",
     },
     {
         "Hilfe", /* HELP */
@@ -132,6 +141,15 @@ static const char * const texts[LANG_COUNT][TXT_COUNT]={
         "Authentifizierung fehlgeschlagen.",
         "Verbindung getrennt.",
         "Verbindung wiederhergestellt.",
+        "Netzwerk nicht verfuegbar.",
+        "Packet Driver fehlt oder Start fehlgeschlagen. PACKETINT pruefen.",
+        "MTCPCFG und IP-Konfiguration pruefen.",
+        "Netzwerkstart fehlgeschlagen. Siehe Diagnose oben.",
+        "Netzwerk nicht konfiguriert.",
+        "Keine gueltige IP-Adresse zugewiesen.",
+        "DHCP ausfuehren oder IP-Konfiguration pruefen.",
+        "Ungueltige Serveradresse. SERVER in AI4DOS.CFG pruefen.",
+        "IP-Gateway nicht konfiguriert. mTCP IP-Konfiguration pruefen.",
     },
 };
 Language language_parse(const char *value)

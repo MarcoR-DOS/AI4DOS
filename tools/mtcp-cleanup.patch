@@ -80,3 +80,34 @@ diff --git a/src/TCPLIB/UTILS.CPP b/src/TCPLIB/UTILS.CPP
      fprintf( stderr, "End: heap is corrupted!\n" );
    }
  
+--- a/src/TCPLIB/UTILS.CPP
++++ b/src/TCPLIB/UTILS.CPP
+@@ -63,6 +63,10 @@
+ #include <time.h>
+ 
+ #include "utils.h"
++
++/* AI4DOS, 2026-10-09: route Utils stderr diagnostics through the UI. */
++extern "C" int ai4dos_mtcp_fprintf(FILE *, const char *, ...);
++#define fprintf ai4dos_mtcp_fprintf
+ #include "trace.h"
+ #include "timer.h"
+ #include "packet.h"
+@@ -746,14 +750,12 @@
+   }
+ 
+   if ( selectedPacketInt == 0 ) {
+-    fprintf( stderr, InitErrorMsg,
+-             "packet driver, are the configured interrupts correct?"
+-             "  Configured packet driver interrupt: 0x%X\n", packetInt );
++    fprintf( stderr, "Init: Packet driver unavailable at interrupt 0x%X.\n", packetInt );
+     if ( packetInt2 ) {
+       fprintf( stderr, "  Configured NetDrive shim interrupt: 0x%X\n", packetInt2 );
+     };
+-    puts("");
+-    return -1;
++    Buffer_stop( );
++    return -2; // AI4DOS: distinguish local packet-driver failure from TCP errors.
+   }
+ 
+   //---------------------------------------------------------------------------

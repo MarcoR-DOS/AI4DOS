@@ -26,5 +26,5 @@ PYBUILD
 "$DOSBOX_X" -defaultconf -nogui -silent -fastlaunch -set 'cpu cycles=max' -time-limit 120 \
  -c "mount c \"$repo_dir/client\"" -c "mount d \"$repo_dir/client/build/watcom\"" \
  -c 'c:' -c 'set WATCOM=D:\' -c 'set PATH=D:\BINW;%PATH%' -c 'set INCLUDE=D:\H' \
- -c 'build\UITBUILD.BAT' -c exit
+ -c 'build\UITBUILD.BAT > build\UITBUILD.LOG' -c exit
 grep -q PASS "$repo_dir/client/build/UITBUILD.STA"

@@ -7,6 +7,7 @@
 #include <string.h>
 #include "net.h"
 static int fd=-1;
+int net_start_error(void){return 0;}
 int net_open(const char *server,unsigned port)
 {
     struct sockaddr_in addr;struct timeval timeout;int one=1;

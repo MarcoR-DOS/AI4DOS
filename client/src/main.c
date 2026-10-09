@@ -9,7 +9,7 @@
 #include "charset.h"
 #if defined(__WATCOMC__) || defined(AI4DOS_UI_TEST)
 #include "ui.h"
-static int using_ui;
+static int using_ui,local_failure_presented;
 #endif
 static char failure[DATA_CAP];
 static void report_error(const char *text)
@@ -26,6 +26,7 @@ static char line[LINE_CAP],message[1002],command[LINE_CAP];
 static char session_id[13];
 static unsigned chat_codepage;
 static TextId reconnect_notice=TXT_RECONNECT_HINT;
+static int local_network_error;
 static int transport_failed,connection_attempt,auth_rejected,ever_connected;
 /* Local presentation only: never serialize transcript records onto the wire. */
 static void system_message(TextId text)
@@ -66,13 +67,16 @@ static int read_event(EventType expected)
 static int connect_session(int fresh)
 {
     unsigned char digest[32];char hex[65];int ok;
-    connection_attempt=1;transport_failed=auth_rejected=0;failure[0]=0;
+#if defined(__WATCOMC__) || defined(AI4DOS_UI_TEST)
+    local_failure_presented=0;
+#endif
+    connection_attempt=1;local_network_error=0;transport_failed=auth_rejected=0;failure[0]=0;
 #if defined(__WATCOMC__) || defined(AI4DOS_UI_TEST)
     if(using_ui)ui_clear_notice();
 #endif
     system_message(TXT_SYSTEM_CONNECTING);
     net_disconnect();protocol_init(&protocol);reconnect_notice=TXT_RECONNECT_HINT;
-    if(!net_open(cfg.server,cfg.port)){transport_failed=1;report_error(tr(TXT_CONNECT_FAILED));return 0;}
+    if(!net_open(cfg.server,cfg.port)){local_network_error=net_start_error();transport_failed=1;report_error(tr(TXT_CONNECT_FAILED));return 0;}
     if(!read_event(EV_GREETING))return 0;
     sprintf(command,"HELLO %s",cfg.device);
     if(!write_line(command)||!read_event(EV_CHALLENGE))return 0;
@@ -205,6 +209,23 @@ done:
     if(result){
 #endif
         if(auth_rejected)system_message(TXT_SYSTEM_AUTH_FAILED);
+        else if(local_network_error==-3||local_network_error==-4||local_network_error==-7||
+                local_network_error==NET_START_NO_IP||local_network_error==NET_START_INVALID_SERVER||local_network_error==NET_START_NO_GATEWAY){
+            if(local_network_error==NET_START_NO_IP){
+                system_message(TXT_SYSTEM_NOT_CONFIGURED);
+                system_message(TXT_SYSTEM_NO_IP);
+                system_message(TXT_SYSTEM_IP_HINT);
+            }else if(local_network_error==NET_START_INVALID_SERVER)system_message(TXT_SYSTEM_INVALID_SERVER);
+            else if(local_network_error==NET_START_NO_GATEWAY)system_message(TXT_SYSTEM_NO_GATEWAY);
+            else{
+                system_message(TXT_SYSTEM_NETWORK);
+                system_message(local_network_error==-4?TXT_SYSTEM_PACKET:local_network_error==-3?TXT_SYSTEM_NET_CONFIG:TXT_SYSTEM_NET_INIT);
+            }
+#if defined(__WATCOMC__) || defined(AI4DOS_UI_TEST)
+            local_failure_presented=using_ui;
+#endif
+            local_network_error=0;
+        }
         else if(transport_failed)system_message(connection_attempt?TXT_SYSTEM_UNREACHABLE:TXT_SYSTEM_LOST);
 #if defined(__WATCOMC__) || defined(AI4DOS_UI_TEST)
         else if(using_ui&&failure[0])ui_notice(failure);
@@ -228,8 +249,8 @@ done:
     ram_mark(7);
 #if defined(__WATCOMC__) || defined(AI4DOS_UI_TEST)
     if(using_ui){if(result&&argc<3)ui_error_wait();ui_shutdown();using_ui=0;}
-    if(result&&!failure[0])strcpy(failure,tr(TXT_FAILED));
-    if(failure[0]){fputs(failure,stderr);if(failure[strlen(failure)-1]!='\n')fputc('\n',stderr);}
+    if(result&&!failure[0]&&!local_failure_presented)strcpy(failure,tr(TXT_FAILED));
+    if(result&&failure[0]&&!local_failure_presented){fputs(failure,stderr);if(failure[strlen(failure)-1]!='\n')fputc('\n',stderr);}
     if(!result&&argc>2)puts(tr(TXT_SCRIPT_DONE));
 #endif
     ram_report();

@@ -24,7 +24,7 @@
 static const char *scenario;
 static const char * const *frames;
 static unsigned frame_at,input_at,opens,wire_messages;
-static int fail_open,fail_write;
+static int fail_open,fail_write,start_error;
 static const int *inputs;
 static const TextId *expected;
 static unsigned expected_count;
@@ -91,6 +91,7 @@ int scripted_input(char *text,int (*poll)(void))
     if(action==1)strcpy(text,wire_messages?"after":"hello");
     return action;
 }
+int net_start_error(void){return start_error;}
 int net_open(const char *server,unsigned port)
 {CHECK(strcmp(server,"127.0.0.1")==0&&port==12345);++opens;return !(fail_open&&opens==(unsigned)fail_open);}
 int net_read(char *text,unsigned cap)
@@ -116,7 +117,7 @@ static void run(const char *name,const char * const *script,const int *actions,
 {
     FILE *fp;unsigned i,systems=0;char *args[]={"client","SYSTEM.CFG",NULL};
     scenario=name;language_set(lang);CHECK(ui_init(850));strcpy(baseline_footer,painted_footer);ui_shutdown();frames=script;inputs=actions;expected=messages;expected_count=count;
-    frame_at=input_at=opens=wire_messages=0;fail_open=unavailable;fail_write=write_failure;
+    frame_at=input_at=opens=wire_messages=0;start_error=unavailable<0?unavailable:0;fail_open=unavailable<0?1:unavailable;fail_write=write_failure;
     fp=fopen("SYSTEM.CFG","w");CHECK(fp!=NULL);
     fprintf(fp,"SERVER=127.0.0.1\nPORT=12345\nDEVICE=test-device\nSECRET=local-test-key\nLANGUAGE=%s\nCODEPAGE=850\n",lang==LANG_DE?"de":"en");fclose(fp);
     CHECK(client_main(2,args)==0);
@@ -153,8 +154,14 @@ int main(void)
     static const TextId parser_error[]={TXT_SYSTEM_CONNECTING,TXT_SYSTEM_CONNECTED,TXT_INVALID_REPLY,TXT_INTERRUPTED};
     static const TextId invalid[]={TXT_SYSTEM_CONNECTING,TXT_SYSTEM_CONNECTED,TXT_UNEXPECTED_FRAME,TXT_RECONNECT_HINT};
     static const int error_stop[]={1,0};
+    static const TextId no_ip[]={TXT_SYSTEM_CONNECTING,TXT_SYSTEM_NOT_CONFIGURED,TXT_SYSTEM_NO_IP,TXT_SYSTEM_IP_HINT,TXT_RECONNECT_HINT};
+    static const TextId bad_server[]={TXT_SYSTEM_CONNECTING,TXT_SYSTEM_INVALID_SERVER,TXT_RECONNECT_HINT};
+    static const TextId no_gateway[]={TXT_SYSTEM_CONNECTING,TXT_SYSTEM_NO_GATEWAY,TXT_RECONNECT_HINT};
     unsigned lang;
     for(lang=0;lang<LANG_COUNT;++lang){
+        run("null IP",success,stop,no_ip,5,(Language)lang,NET_START_NO_IP,0);
+        run("invalid server",success,stop,bad_server,3,(Language)lang,NET_START_INVALID_SERVER,0);
+        run("missing gateway",success,stop,no_gateway,3,(Language)lang,NET_START_NO_GATEWAY,0);
         run("gateway timeout",gateway_timeout,error_stop,upstream,4,(Language)lang,0,0);
         run("parser error",invalid_data,error_stop,parser_error,4,(Language)lang,0,0);
         run("resume busy",busy_session,lost,session_busy,6,(Language)lang,0,0);
@@ -171,6 +178,6 @@ int main(void)
         run("write loss/resume",write_drop,reconnect,restored,6,(Language)lang,0,1);
         run("failed offline new preserves history",success,fresh_fail,new_failed,7,(Language)lang,2,0);
     }
-    puts("AI4DOS SYSTEM PASS: EN/DE 15 scenarios: start/unreachable/auth/loss/reconnect/resume/timeout/provider/parser/save/roles/wire isolation/static footer/status");
+    puts("AI4DOS SYSTEM PASS: EN/DE 18 scenarios including null-IP/invalid-server/missing-gateway: start/unreachable/auth/loss/reconnect/resume/timeout/provider/parser/save/roles/wire isolation/static footer/status");
     return 0;
 }

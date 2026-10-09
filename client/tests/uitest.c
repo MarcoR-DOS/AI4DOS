@@ -67,7 +67,7 @@ static void check_modals_and_scroll(void)
     assert(controls_handle(27,0)==CONTROL_HANDLED&&!controls_active());
     for(i=0;i<18;++i)assert(strcmp(saved[i],ui_line(i))==0);
     assert(strcmp(editor.text,"dr")==0&&strncmp(painted[0],"AI: alpha beta",14)==0);
-    ui_set_session("012345abcdef");controls_handle(0x3b00,0);assert(strstr(painted[3],"012345abcdef"));controls_handle(27,0);
+    ui_set_session("012345abcdef");controls_handle(0x3b00,0);assert(strstr(painted[0],"012345abcdef"));controls_handle(27,0);
     controls_handle(0x3f00,0);controls_handle('T',0);controls_handle('E',0);controls_handle(13,0);
     assert(!controls_active()&&strstr(ui_line(2),"System: Saved: CHATS\\TE"));controls_handle(27,0);
     assert(strcmp(editor.text,"dr")==0);
@@ -99,25 +99,22 @@ static void check_localization(void)
         assert(strlen(tr(TXT_NEW_CHAT))+strlen(tr(TXT_HELP_KEY))+strlen(tr(TXT_SAVE))+strlen(tr(TXT_EXIT))+10<=76);
         assert(ui_get_status()==UI_CONNECTING&&strcmp(ui_status_label(1),"CONNECTING")==0);
         ui_status(UI_ONLINE);assert(strcmp(ui_status_label(1),"ONLINE")==0);ui_info();
-        assert(strstr(painted[0],"Version " AI4DOS_VERSION AI4DOS_VERSION_SUFFIX));assert(strstr(painted[1],"0.3"));
-        assert(strstr(painted[3],lang?"Sitzung: -":"Session: -"));
-        assert(strstr(painted[4],"Status: Online"));assert(strstr(painted[5],lang?"Verbunden":"Connected"));
-        assert(strlen("License: GPL-3.0-only")<=76&&strncmp(painted[14],"License: GPL-3.0-only",21)==0);
-        assert(strlen("mTCP: GPL-3.0-or-later")<=76&&strncmp(painted[15],"mTCP: GPL-3.0-or-later",22)==0);
-        assert(strlen("Watcom runtime: OWPL 1.0 - source available")<=76&&strncmp(painted[16],"Watcom runtime: OWPL 1.0 - source available",43)==0);
-        assert(strlen("Source: github.com/open-watcom/open-watcom-v2")<=76&&strncmp(painted[17],"Source: github.com/open-watcom/open-watcom-v2",45)==0);
-        for(i=0;i<76;++i){
-            if(i>=21)assert(painted[14][i]==' ');
-            if(i>=22)assert(painted[15][i]==' ');
-            if(i>=43)assert(painted[16][i]==' ');
-            if(i>=45)assert(painted[17][i]==' ');
-        }
-        for(i=6;i<14;++i)assert(strspn(painted[i]," ")==76);
+        assert(strstr(painted[0],lang?"Sitzung: -":"Session: -"));
+        assert(strstr(painted[1],"Status: Online"));assert(strstr(painted[2],lang?"Verbunden":"Connected"));
+        assert(strncmp(painted[5],"AI4DOS",6)==0);
+        assert(strstr(painted[6],"Version: " AI4DOS_VERSION AI4DOS_VERSION_SUFFIX));
+        assert(strstr(painted[7],"Wire Protocol: " WIRE_VERSION));
+        assert(strstr(painted[8],"License: GPL-3.0-only"));
+        assert(strstr(painted[9],"Source: github.com/MarcoR-DOS/AI4DOS"));
+        assert(strstr(painted[12],"Third-Party Licenses"));
+        assert(strstr(painted[13],"mTCP: GPL-3.0-or-later"));
+        assert(strstr(painted[14],"Watcom Runtime: OWPL 1.0 - source available"));
+        assert(strstr(painted[15],"Source: github.com/open-watcom/open-watcom-v2"));
         for(i=0;i<18;++i)assert(!strstr(painted[i],"OK AI4DOS")&&!strstr(painted[i],"UTF-8"));
         ui_overlay_end();ui_status(UI_TX_RX);assert(strcmp(ui_status_label(1),"TX/RX")==0);
         ui_status(UI_ONLINE);assert(strcmp(ui_status_label(1),"ONLINE")==0);
-        ui_status(UI_ERROR);ui_info();assert(strstr(painted[4],lang?"Fehler":"Error"));
-        assert(strstr(painted[5],lang?"Getrennt":"Disconnected"));ui_overlay_end();
+        ui_status(UI_ERROR);ui_info();assert(strstr(painted[1],lang?"Fehler":"Error"));
+        assert(strstr(painted[2],lang?"Getrennt":"Disconnected"));ui_overlay_end();
         ui_help();assert(strncmp(painted[0],lang?"Hilfe":"Help",lang?5:4)==0);
         assert(strstr(painted_footer,lang?(page<2?"ESC Zur\201ck":"ESC Zurueck"):"ESC Back"));
         ui_status(UI_TX_RX);ui_overlay_end();assert(ui_get_status()==UI_TX_RX);

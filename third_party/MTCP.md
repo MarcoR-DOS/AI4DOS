@@ -55,12 +55,13 @@ availability is claimed until that delivery exists. See the
 ## Prepared source release asset
 
 The separately prepared asset for AI4DOS 0.1.0-beta.1 is
-`AI4DOS-DOS-Source-Beta-2026-10-09-F1.zip` (94 files).
+`AI4DOS-DOS-Source-0.1.0-beta.1.zip` (94 files).
 
-- Source archive SHA256: `d9a324cf228ecedf8172892e5ed78a38718995696e7b047fe1161746315356a9`.
-- Matching DOS binary SHA256: `55b6aef3fb43baecbd960f5f6ea19ba82ccd5817c5d025dceff35f35cf65abad`.
+- Source archive SHA256: `183980d7dfce83e86cd1fbb13ff84647ca6cdab852c0c968296fbb50c6a46d07`.
+- Matching DOS binary size: 143512 bytes.
+- Matching DOS binary SHA256: `0e4f5b2a97f3356bc0b4bdaa0cb79021eac45ddeee3064e5cf4aefbab4c6ebb0`.
 - mTCP base: `dbb161efb723da4a9eaadc7436c2110492370acd`; patch:
-  `e953e8a6715d1fccaadf82b39c9bb6a963e72c0d880006a8e90f549895cd428f`.
+  `af3f0b53f54b1b7ea45ee77289b7934d1fc90b6e9bd047b86dd9fecbd5dfe7dd`.
 
 The archive has 92 input hashes in `SOURCE-MANIFEST.json`; `SHA256SUMS`
 contains 93 entries, including the source manifest. Together with `SHA256SUMS`,
