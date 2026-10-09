@@ -20,6 +20,8 @@ Falls du noch keinen API-Zugang eingerichtet hast, lies zuerst:
 
 ## 1. Serverpaket entpacken
 
+Lade das passende Paket von der [AI4DOS GitHub-Releases-Seite](https://github.com/MarcoR-DOS/AI4DOS/releases) herunter.
+
 Entpacke das Windows-Serverpaket in einen Ordner deiner Wahl.
 
 Zum Beispiel:

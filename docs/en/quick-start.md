@@ -25,6 +25,8 @@ The gateway can run on a Windows PC, Mac, Linux computer, Raspberry Pi, NAS, hom
 
 ## 1. Download the appropriate packages
 
+Download the appropriate package from the [AI4DOS GitHub Releases](https://github.com/MarcoR-DOS/AI4DOS/releases) page.
+
 You always need the **DOS package**.
 
 In addition, download exactly the **server package** that matches your modern computer or server environment:

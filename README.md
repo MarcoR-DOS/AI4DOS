@@ -257,6 +257,8 @@ Documentation: **[English](docs/en/quick-start.md)** | **[Deutsch](docs/de/quick
 
 ## Downloads
 
+[Download AI4DOS - GitHub Releases](https://github.com/MarcoR-DOS/AI4DOS/releases)
+
 AI4DOS releases are distributed as separate packages so you only download what you need:
 
 - DOS

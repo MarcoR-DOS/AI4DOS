@@ -2,6 +2,8 @@
 
 This guide covers networking, `AI4DOS.CFG` configuration and operation of the DOS client. Extract the DOS package as described in the [Quick Start](quick-start.md#4-set-up-ai4dos-on-the-dos-pc); your DOS PC needs a working network connection to communicate with your gateway.
 
+Download the DOS package from the [AI4DOS GitHub Releases](https://github.com/MarcoR-DOS/AI4DOS/releases) page.
+
 Start with [networking that already works](#a-networking-already-works) or [set up networking from scratch](#b-set-up-networking-from-scratch). Then continue with [client configuration](#c-configure-the-dos-client-ai4doscfg) and [operation](#use-the-dos-client).
 
 AI4DOS supports the following DOS networking solutions:

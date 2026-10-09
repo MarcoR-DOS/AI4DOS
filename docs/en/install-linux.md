@@ -22,6 +22,8 @@ If you have not set up API access yet, read this first:
 
 ## 1. Extract the server package
 
+Download the appropriate package from the [AI4DOS GitHub Releases](https://github.com/MarcoR-DOS/AI4DOS/releases) page.
+
 Extract the Linux server package into a folder of your choice.
 
 For example:

@@ -27,6 +27,8 @@ If you have not set up API access yet, read this first:
 
 ## 2. Extract the Docker package
 
+Download the appropriate package from the [AI4DOS GitHub Releases](https://github.com/MarcoR-DOS/AI4DOS/releases) page.
+
 Extract the Docker server package on the computer or server where the gateway will run.
 
 The DOS files **do not belong** in this folder. They are used separately on your DOS PC.

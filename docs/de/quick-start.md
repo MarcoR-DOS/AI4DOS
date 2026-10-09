@@ -25,6 +25,8 @@ Der Gateway kann zum Beispiel auf einem Windows-PC, Mac, Linux-Rechner, Raspberr
 
 ## 1. Lade die passenden Pakete herunter
 
+Lade das passende Paket von der [AI4DOS GitHub-Releases-Seite](https://github.com/MarcoR-DOS/AI4DOS/releases) herunter.
+
 Du brauchst immer das **DOS-Paket**.
 
 Dazu lädst du genau das **Serverpaket** herunter, das zu deinem modernen Rechner bzw. deiner Serverumgebung passt:

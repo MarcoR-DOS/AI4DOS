@@ -27,6 +27,8 @@ Falls du noch keinen API-Zugang eingerichtet hast, lies zuerst:
 
 ## 2. Docker-Paket entpacken
 
+Lade das passende Paket von der [AI4DOS GitHub-Releases-Seite](https://github.com/MarcoR-DOS/AI4DOS/releases) herunter.
+
 Entpacke das Docker-Serverpaket auf dem Rechner oder Server, auf dem der Gateway laufen soll.
 
 Die DOS-Dateien gehören **nicht** in diesen Ordner. Sie werden separat auf deinem DOS-PC verwendet.
